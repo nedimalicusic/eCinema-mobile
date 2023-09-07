@@ -242,6 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 20,
           ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
