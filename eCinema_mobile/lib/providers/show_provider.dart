@@ -25,6 +25,47 @@ class ShowProvider extends BaseProvider<Shows> {
       throw Exception('Failed to load data');
     }
   }
+  @override
+  Future<List<Shows>> getByGenreId(int? genreId,int cinemaId) async {
+    var uri = Uri.parse('$apiUrl/Show/GetByGenreId?genreId=${genreId}&cinemaId=${cinemaId}');
+    var headers = Authorization.createHeaders();
+
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data.map((d) => fromJson(d)).cast<Shows>().toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  @override
+  Future<List<Shows>> getLastAddShows(int size,int cinemaId) async {
+    var uri = Uri.parse('$apiUrl/Show/GetLastAddShows?size=${size}&cinemaId=${cinemaId}');
+    var headers = Authorization.createHeaders();
+
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data.map((d) => fromJson(d)).cast<Shows>().toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  @override
+  Future<List<Shows>> getMostWatchedShows(int size,int cinemaId) async {
+    var uri = Uri.parse('$apiUrl/Show/GetMostWatchedShows?size=${size}&cinemaId=${cinemaId}');
+    var headers = Authorization.createHeaders();
+
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data.map((d) => fromJson(d)).cast<Shows>().toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   Shows fromJson(data) {

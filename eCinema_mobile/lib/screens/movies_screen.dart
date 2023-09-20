@@ -1,12 +1,9 @@
+import 'package:ecinema_mobile/models/shows.dart';
+import 'package:ecinema_mobile/providers/show_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../helpers/constants.dart';
 import '../models/genre.dart';
-import '../models/movie.dart';
 import '../providers/genre_provider.dart';
-import '../providers/movie_provider.dart';
-import '../utils/authorization.dart';
 import '../utils/error_dialog.dart';
 import 'movie_detail_screen.dart';
 
@@ -19,10 +16,10 @@ class MoviesScreen extends StatefulWidget {
 }
 
 class _MoviesScreenState extends State<MoviesScreen> {
-  late MovieProvider _movieProvider;
   late GenreProvider _genreProvider;
+  late ShowProvider _showProvider;
   List<Genre> genres = <Genre>[];
-  List<Movie> movies = <Movie>[];
+  List<Shows> shows = <Shows>[];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int? selectedGenre;
   bool loading = false;
@@ -30,15 +27,14 @@ class _MoviesScreenState extends State<MoviesScreen> {
   @override
   void initState() {
     super.initState();
-
-    _movieProvider = context.read<MovieProvider>();
+    _showProvider = context.read<ShowProvider>();
     _genreProvider = context.read<GenreProvider>();
     loadData();
   }
 
   void loadData() async {
     loadGenres();
-    loadMovies();
+    loadShows();
   }
 
   Future loadGenres() async {
@@ -47,47 +43,42 @@ class _MoviesScreenState extends State<MoviesScreen> {
       setState(() {
         genres = data;
       });
-      print(genres);
     } on Exception catch (e) {
       showErrorDialog(context, e.toString().substring(11));
     }
   }
 
-  void loadMovies() async {
+  void loadShows() async {
     loading = true;
     try {
-      var params = <String, String>{};
-      if(selectedGenre!=null)
-        {
-          params.addAll({'GenreId': selectedGenre!.toString()});
-        }
-      var data = await _movieProvider.get(params);
+      var data = await _showProvider.getByGenreId(selectedGenre,1);
       setState(() {
-        movies = data;
+        shows = data;
       });
       loading = false;
     } on Exception catch (e) {
       showErrorDialog(context, e.toString().substring(11));
     }
   }
-  void loadMostWatchedMovies() async {
+
+  void loadMostWatchedShows() async {
     loading = true;
     try {
-      var data = await _movieProvider.getMostWatchedMovies(1000);
+      var data = await _showProvider.getMostWatchedShows(9999,1);
       setState(() {
-        movies = data;
+        shows = data;
       });
       loading = false;
     } on Exception catch (e) {
       showErrorDialog(context, e.toString().substring(11));
     }
   }
-  void loadLastAddMovies() async {
+  void loadLastAddShows() async {
     loading = true;
     try {
-      var data = await _movieProvider.getLastAddMovies(1000);
+      var data = await _showProvider.getLastAddShows(9999,1);
       setState(() {
-        movies = data;
+        shows = data;
       });
       loading = false;
     } on Exception catch (e) {
@@ -107,13 +98,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
             ListTile(
               title: Text("Najgledaniji filmovi"),
               onTap: () {
-                loadMostWatchedMovies();
+                loadMostWatchedShows();
               },
             ),
             ListTile(
               title: Text("Posljednje dodani filmovi"),
               onTap: () {
-                loadLastAddMovies();
+                loadLastAddShows();
               },
             ),
             Divider(),
@@ -124,7 +115,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                     setState(() {
                       selectedGenre = e.id;
                     });
-                    loadMovies();
+                    loadShows();
                     // Handle onTap action
                   },
                 )),
@@ -134,13 +125,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
       body: Column(
         children: [
           SizedBox(height: 20,),
-          _buildMovieList(movies)
+          _buildShowList(shows)
         ],
       )
     );
   }
 
-  Widget _buildMovieList(List<Movie> movies) {
+  Widget _buildShowList(List<Shows> shows) {
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -148,20 +139,20 @@ class _MoviesScreenState extends State<MoviesScreen> {
           childAspectRatio: 0.7,
         ),
         padding: const EdgeInsets.all(8),
-        itemCount: movies.length,
+        itemCount: shows.length,
         itemBuilder: (context, index) {
-          return _buildMovies(context, movies[index]);
+          return _buildShow(context, shows[index]);
         },
       ),
     );
   }
 
-  Widget _buildMovies(BuildContext context, Movie movie) {
+  Widget _buildShow(BuildContext context, Shows shows) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
         MovieDetailScreen.routeName,
-        arguments: movie,
+        arguments: shows,
       ),
       child: Container(
         margin: EdgeInsets.all(8),
@@ -171,7 +162,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
-                  'https://picsum.photos/250?image=${movie.photoId}',
+                  'https://picsum.photos/250?image=${shows.movie.photoId}',
                   fit: BoxFit.cover,
                 ),
               ),

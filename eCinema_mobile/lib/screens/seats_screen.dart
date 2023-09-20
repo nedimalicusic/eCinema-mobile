@@ -14,10 +14,10 @@ import 'package:intl/intl.dart';
 
 
 class SeatsScreen extends StatefulWidget {
-  const SeatsScreen({super.key, required this.movie});
+  const SeatsScreen({super.key, required this.shows});
 
   static const String routeName = '/seats';
-  final Movie movie;
+  final Shows shows;
 
   @override
   State<SeatsScreen> createState() => _SeatsScreenState();
@@ -53,7 +53,7 @@ class _SeatsScreenState extends State<SeatsScreen> {
   }
   void loadShows() async {
     try {
-      var showsData = await showProvider.getByMovieId(widget.movie.id);
+      var showsData = await showProvider.getByMovieId(widget.shows.movie.id);
       setState(() {
         shows = showsData;
         print(shows);
@@ -97,12 +97,12 @@ class _SeatsScreenState extends State<SeatsScreen> {
               color: Colors.grey,
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             _buildCinemaScreen(),
             Container(
-              constraints: const BoxConstraints(minHeight: 200),
-              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 50),
+              constraints: const BoxConstraints(minHeight: 100),
+              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: seats.isNotEmpty
                   ?  GridView.count(
                 shrinkWrap: true,
@@ -129,19 +129,21 @@ class _SeatsScreenState extends State<SeatsScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: _buildDate(), // Poziv funkcije _buildDate() koja vraća listu datuma
+                children: _buildDate(),
               ),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: _buildTime(), // Poziv funkcije _buildDate() koja vraća listu datuma
+                children: _buildTime(),
               ),
             ),
-            SizedBox(height: 60,),
-            Expanded(
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
               child: _buildBottomBar(),
-            ),
+            )
           ],
         ),
       ),
@@ -347,7 +349,7 @@ class _SeatsScreenState extends State<SeatsScreen> {
                   height: 8,
                 ),
                 Text(
-                  "15KM",
+                  widget.shows.price.toString() + "KM",
                   style: const TextStyle(
                       color: Colors.teal,
                       fontWeight: FontWeight.bold,

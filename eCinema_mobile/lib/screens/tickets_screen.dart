@@ -1,6 +1,7 @@
 import 'package:ecinema_mobile/models/reservation.dart';
 import 'package:ecinema_mobile/providers/reservation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/error_dialog.dart';
@@ -68,7 +69,7 @@ class _TicketsScreenState extends State<TicketsScreen> {
 
   Widget _buildReservation(BuildContext context, Reservation reservation) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: EdgeInsets.all(8),
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.teal, width: 1.0), // Adjust color and width
@@ -83,8 +84,8 @@ class _TicketsScreenState extends State<TicketsScreen> {
               borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
               child: Image.network(
                 'https://picsum.photos/250?image=1',
-                width: 120,
-                height: 140,
+                width: 100,
+                height: 120,
                 fit: BoxFit.cover,
               ),
             ),
@@ -97,9 +98,9 @@ class _TicketsScreenState extends State<TicketsScreen> {
               Column(
                 children: [
                   Icon(Icons.play_arrow_rounded, color: Colors.teal),
-                  SizedBox(height: 15), // Add spacing between icons and text
+                  SizedBox(height: 10), // Add spacing between icons and text
                   Icon(Icons.calendar_month, color: Colors.teal),
-                  SizedBox(height: 15), // Add spacing between icons and text
+                  SizedBox(height: 10), // Add spacing between icons and text
                   Icon(Icons.timer_outlined, color: Colors.teal),
                 ],
               ),
@@ -108,20 +109,39 @@ class _TicketsScreenState extends State<TicketsScreen> {
                 children: [
                   Text(
                     reservation.show.movie.title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
                   SizedBox(height: 15), // Add spacing between icons and text
                   Text(
-                    reservation.show.date.toString(),
+                      '${DateFormat('dd.MM.yyyy').format( reservation.show.date)}',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
                   SizedBox(height: 15), // Add spacing between icons and text
                   Text(
-                    reservation.show.startTime.toString(),
+                    '${DateFormat.Hm().format( reservation.show.startTime)}',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
                 ],
               ),
+              SizedBox(width: 45),
+              Column(
+                children: [
+                  Container(
+                    height: 120,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.teal, // Boja pozadine
+                      borderRadius: BorderRadius.circular(10), // Zaobljenje ivica
+                    ),
+                    child: Center(
+                      child: Text(
+                        reservation.seat.row + reservation.seat.column.toString(),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           )
         ],

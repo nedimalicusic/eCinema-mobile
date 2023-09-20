@@ -60,14 +60,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
           Center(child: ProfilePicture()),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           ProfileInformation(),
           SizedBox(
-            height: 20,
+            height: 5,
           ),
           Center(child: Logout()),
         ],
@@ -118,11 +118,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Image.asset(
           'assets/images/user.png',
-          width: 130,
+          width: 100,
+          height: 100,
         ),
-        const SizedBox(height: 30),
         SizedBox(
-          width: 180,
+          width: 150,
           child: ElevatedButton(
             onPressed: () {},
             child: Text("Change picture"),
@@ -167,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             enabled: false,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           TextFormField(
             initialValue: user!.LastName,
             decoration: InputDecoration(
@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             enabled: false,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           TextFormField(
             initialValue: user!.Email,
             decoration: InputDecoration(
@@ -215,7 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             enabled: false,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           TextFormField(
             initialValue: user!.PhoneNumber,
             decoration: InputDecoration(
@@ -240,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             enabled: false,
           ),
           SizedBox(
-            height: 20,
+            height: 5 ,
           ),
 
           Row(

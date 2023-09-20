@@ -1,4 +1,11 @@
+import 'package:ecinema_mobile/models/notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../providers/notification_provider.dart';
+import '../providers/user_provider.dart';
+import '../utils/error_dialog.dart';
 
 
 class NotificationScreen extends StatefulWidget {
@@ -9,7 +16,30 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  late NotificationProvider _notificationProvider;
+  List<Notifications> notifications = <Notifications>[];
+  late UserProvider userProvider;
+  late User? user;
 
+  @override
+  void initState() {
+    super.initState();
+    _notificationProvider = context.read<NotificationProvider>();
+    userProvider = context.read<UserProvider>();
+    loadNotifications();
+  }
+
+  Future loadNotifications() async
+  {
+    try {
+      var data = await _notificationProvider.getByUserId(int.parse(userProvider.user!.Id));
+      setState(() {
+        notifications = data;
+      });
+    } on Exception catch (e) {
+      showErrorDialog(context, e.toString().substring(11));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +57,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Widget _buildNotificationsList() {
     return ListView.builder(
-      itemCount: 2,
+      itemCount: notifications.length,
       itemBuilder: (context, index) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(height: 10),
-            _buildNotification(context),
-            SizedBox(height: 5), // Dodajte prazan prostor između notifikacija
+            _buildNotification(context,notifications[index]),
+            SizedBox(height: 5),
           ],
         );
       },
     );
   }
 
-  Widget _buildNotification(BuildContext context) {
+  Widget _buildNotification(BuildContext context,Notifications notification) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
       padding: EdgeInsets.all(16),
@@ -63,12 +93,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Rezervacija potvrđena',
+                  notification.title,
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 SizedBox(height: 15),
                 Text(
-                  'Uspješno ste rezervisali termin 12. April 2022 u 10:30 sati u Plaza Mostaru.',
+                  notification.description,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white ),
                 ),
               ],

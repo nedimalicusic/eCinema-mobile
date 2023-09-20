@@ -1,3 +1,5 @@
+import 'package:ecinema_mobile/models/shows.dart';
+import 'package:ecinema_mobile/providers/show_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,36 +16,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
-  late MovieProvider _movieProvider;
-  List<Movie> moviesLastAdd = <Movie>[];
-  List<Movie> moviesMostWatched = <Movie>[];
+  late ShowProvider _showProvider;
+  List<Shows> showMostWatched = <Shows>[];
+  List<Shows> showLastAdd = <Shows>[];
 
   @override
   void initState() {
     super.initState();
-
-    _movieProvider = context.read<MovieProvider>();
-    loadLastAddMovies();
-    loadMostWatchedMovies();
+    _showProvider = context.read<ShowProvider>();
+    loadLastAddShows();
+    loadMostWatchedShows();
   }
-  void loadMostWatchedMovies() async {
+  void loadLastAddShows() async {
     loading = true;
     try {
-      var data = await _movieProvider.getMostWatchedMovies(3);
+      var data = await _showProvider.getLastAddShows(3,1);
       setState(() {
-        moviesMostWatched = data;
+        showLastAdd = data;
       });
       loading = false;
     } on Exception catch (e) {
       showErrorDialog(context, e.toString().substring(11));
     }
   }
-  void loadLastAddMovies() async {
+  void loadMostWatchedShows() async {
     loading = true;
     try {
-      var data = await _movieProvider.getLastAddMovies(3);
+      var data = await _showProvider.getMostWatchedShows(3,1);
       setState(() {
-        moviesLastAdd = data;
+        showMostWatched = data;
       });
       loading = false;
     } on Exception catch (e) {
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 10),
-            _buildMovieList(moviesMostWatched),
+            _buildShowList(showMostWatched),
             Text(
               "Posljednje dodani filmovi",
               style: TextStyle(
@@ -97,13 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 10),
-            _buildMovieList(moviesLastAdd)
+            _buildShowList(showLastAdd)
           ],
         )
     );
   }
 
-  Widget _buildMovieList(List<Movie> movies) {
+  Widget _buildShowList(List<Shows> shows) {
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -111,20 +112,20 @@ class _HomeScreenState extends State<HomeScreen> {
           childAspectRatio: 0.7,
         ),
         padding: const EdgeInsets.all(8),
-        itemCount: movies.length,
+        itemCount: shows.length,
         itemBuilder: (context, index) {
-          return _buildMovies(context, movies[index]);
+          return _buildShow(context, shows[index]);
         },
       ),
     );
   }
 
-  Widget _buildMovies(BuildContext context, Movie movie) {
+  Widget _buildShow(BuildContext context, Shows shows) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
         MovieDetailScreen.routeName,
-        arguments: movie,
+        arguments: shows,
       ),
       child: Container(
         margin: EdgeInsets.all(8),
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
-                  'https://picsum.photos/250?image=${movie.photoId}',
+                  'https://picsum.photos/250?image=${shows.movie.photoId}',
                   fit: BoxFit.cover,
                 ),
               ),
