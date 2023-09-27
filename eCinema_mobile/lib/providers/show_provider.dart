@@ -31,6 +31,7 @@ class ShowProvider extends BaseProvider<Shows> {
     var headers = Authorization.createHeaders();
 
     final response = await http.get(uri, headers: headers);
+    print(response);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data.map((d) => fromJson(d)).cast<Shows>().toList();
@@ -45,6 +46,7 @@ class ShowProvider extends BaseProvider<Shows> {
     var headers = Authorization.createHeaders();
 
     final response = await http.get(uri, headers: headers);
+    print(response);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data.map((d) => fromJson(d)).cast<Shows>().toList();
@@ -59,6 +61,7 @@ class ShowProvider extends BaseProvider<Shows> {
     var headers = Authorization.createHeaders();
 
     final response = await http.get(uri, headers: headers);
+    print(response);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data.map((d) => fromJson(d)).cast<Shows>().toList();

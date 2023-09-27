@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
-                  'https://picsum.photos/250?image=${shows.movie.photoId}',
+                  'https://localhost:44320/api/Photo/${shows.movie.photoId}',
                   fit: BoxFit.cover,
                 ),
               ),

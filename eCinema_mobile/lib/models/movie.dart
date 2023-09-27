@@ -1,4 +1,6 @@
 
+import 'package:ecinema_mobile/models/production.dart';
+
 class Movie {
   int id;
   String title;
@@ -9,6 +11,8 @@ class Movie {
   int length;
   int numberOfViews;
   int photoId;
+  int productionId;
+  Production production;
 
   Movie(
       {required this.id,
@@ -20,6 +24,8 @@ class Movie {
         required this.length,
         required this.numberOfViews,
         required this.photoId,
+        required this.productionId,
+        required this.production,
        });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -33,6 +39,8 @@ class Movie {
       length: json['length'],
       numberOfViews: json['numberOfViews'],
       photoId: json['photoId'],
+      productionId: json['productionId'],
+      production: Production.fromJson(json['production']),
        );
   }
 
@@ -47,6 +55,8 @@ class Movie {
     data['length'] = length;
     data['numberOfViews'] = numberOfViews;
     data['photoId'] = photoId;
+    data['productionId'] = productionId;
+    data['production'] = production;
     return data;
   }
 }

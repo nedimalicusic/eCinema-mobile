@@ -240,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             enabled: false,
           ),
           SizedBox(
-            height: 5 ,
+            height: 10 ,
           ),
 
           Row(

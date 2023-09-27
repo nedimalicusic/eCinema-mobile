@@ -52,7 +52,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         children: <Widget>[
                           InfoCard(widget.shows.movie.releaseYear.toString(),"Genre", Icons.play_arrow_rounded),
                           InfoCard(widget.shows.movie.duration.toString(),"Duration" ,Icons.timer),
-                          InfoCardWithoutIcon("Nesto",widget.shows.movie.releaseYear.toString()),
+                          InfoCardWithoutIcon(widget.shows.movie.production.country.abbreviation,widget.shows.movie.releaseYear.toString()),
                         ],
                       ),
                     ),
