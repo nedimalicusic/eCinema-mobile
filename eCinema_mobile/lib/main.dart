@@ -15,6 +15,7 @@ import 'package:ecinema_mobile/screens/login_screen.dart';
 import 'package:ecinema_mobile/screens/movie_detail_screen.dart';
 import 'package:ecinema_mobile/screens/movies_screen.dart';
 import 'package:ecinema_mobile/screens/notification_screen.dart';
+import 'package:ecinema_mobile/screens/payment_screen.dart';
 import 'package:ecinema_mobile/screens/profile_screen.dart';
 import 'package:ecinema_mobile/screens/register_screen.dart';
 import 'package:ecinema_mobile/screens/seats_screen.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
             LoginScreen.routeName: (context) => const LoginScreen(),
             RegisterScreen.routeName: (context) => const RegisterScreen(),
             CinemaScreen.routeName: (context) => const CinemaScreen(),
+            PaymentScreen.routeName: (context) => const PaymentScreen(),
             ChangePasswordScreen.routeName: (context) =>
                 const ChangePasswordScreen(),
             EditProfileScreen.routeName: (context) => const EditProfileScreen()

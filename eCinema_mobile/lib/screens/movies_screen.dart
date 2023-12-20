@@ -2,8 +2,11 @@ import 'package:ecinema_mobile/models/shows.dart';
 import 'package:ecinema_mobile/providers/show_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
+import '../helpers/constants.dart';
 import '../models/genre.dart';
 import '../providers/genre_provider.dart';
+import '../utils/authorization.dart';
 import '../utils/error_dialog.dart';
 import 'movie_detail_screen.dart';
 
@@ -161,9 +164,16 @@ class _MoviesScreenState extends State<MoviesScreen> {
             Expanded( // Dodajte Expanded oko slike
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
-                child: Image.network(
-                  'https://picsum.photos/250?image=${shows.movie.photoId}',
-                  fit: BoxFit.cover,
+                child:FadeInImage(
+                  image: NetworkImage(
+                    '$apiUrl/images/${shows.movie.photoId}',
+                    headers: Authorization.createHeaders(),
+                  ),
+                  placeholder: MemoryImage(kTransparentImage),
+                  fadeInDuration: const Duration(milliseconds: 300),
+                  fit: BoxFit.fill,
+                  width: 80,
+                  height: 105,
                 ),
               ),
             ),

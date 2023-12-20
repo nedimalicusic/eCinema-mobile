@@ -2,6 +2,7 @@ import 'package:ecinema_mobile/models/shows.dart';
 import 'package:ecinema_mobile/providers/cinema_provider.dart';
 import 'package:ecinema_mobile/providers/reservation_provider.dart';
 import 'package:ecinema_mobile/providers/show_provider.dart';
+import 'package:ecinema_mobile/screens/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../helpers/constants.dart';
@@ -50,6 +51,8 @@ class _SeatsScreenState extends State<SeatsScreen> {
 
   updateTicketProvider() {
     reservationProvider.setSelectedSeats(selectedSeats);
+    reservationProvider.setProjection(widget.shows);
+
   }
   void loadShows() async {
     try {
@@ -364,6 +367,7 @@ class _SeatsScreenState extends State<SeatsScreen> {
             child: ElevatedButton(
                 onPressed: () {
                   updateTicketProvider();
+                  Navigator.pushNamed(context, PaymentScreen.routeName);
                 },
               style: ButtonStyle(
                 backgroundColor:

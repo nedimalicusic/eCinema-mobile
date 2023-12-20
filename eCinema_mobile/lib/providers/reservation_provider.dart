@@ -19,9 +19,14 @@ class ReservationProvider extends BaseProvider<Reservation> {
     _selectedSeats = seats;
   }
 
-  setShows(Shows show) {
-    _shows = show;
+  setProjection(Shows shows) {
+    _shows = shows;
   }
+
+  get selectedTicketTotalPrice => _shows!.price * _selectedSeats.length;
+
+  List<Seats> get selectedSeats => _selectedSeats;
+  Shows? get shows => _shows;
 
   @override
   Future<List<Reservation>> getByUserId(int userId) async {

@@ -1,6 +1,5 @@
 import 'package:ecinema_mobile/models/seats.dart';
 import 'package:ecinema_mobile/models/shows.dart';
-import 'package:ecinema_mobile/models/user.dart';
 
 class Reservation {
   late int id;
